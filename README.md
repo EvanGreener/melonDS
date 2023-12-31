@@ -14,6 +14,7 @@
 DS emulator, sorta
 
 The goal is to do things right and fast, akin to blargSNES (but hopefully better). But also to, you know, have a fun challenge :)
+
 <hr>
 
 ## How to use
@@ -23,9 +24,9 @@ DS firmwares dumped from a DSi or 3DS aren't bootable and only contain configura
 
 ### Possible firmware sizes
 
- * 128KB: DSi/3DS DS-mode firmware (reduced size due to lacking bootcode)
- * 256KB: regular DS firmware
- * 512KB: iQue DS firmware
+- 128KB: DSi/3DS DS-mode firmware (reduced size due to lacking bootcode)
+- 256KB: regular DS firmware
+- 512KB: iQue DS firmware
 
 DS BIOS dumps from a DSi or 3DS can be used with no compatibility issues. DSi BIOS dumps (in DSi mode) are not compatible. Or maybe they are. I don't know.
 
@@ -34,11 +35,13 @@ As for the rest, the interface should be pretty straightforward. If you have a q
 ## How to build
 
 ### Linux
+
 1. Install dependencies:
-   * Ubuntu 22.04: `sudo apt install cmake extra-cmake-modules libcurl4-gnutls-dev libpcap0.8-dev libsdl2-dev qtbase5-dev qtbase5-private-dev qtmultimedia5-dev libslirp-dev libarchive-dev libzstd-dev`
-   * Older Ubuntu: `sudo apt install cmake extra-cmake-modules libcurl4-gnutls-dev libpcap0.8-dev libsdl2-dev qt5-default qtbase5-private-dev qtmultimedia5-dev libslirp-dev libarchive-dev libzstd-dev`
-   * Arch Linux: `sudo pacman -S base-devel cmake extra-cmake-modules git libpcap sdl2 qt5-base qt5-multimedia libslirp libarchive zstd`
-3. Download the melonDS repository and prepare:
+   - Ubuntu 22.04: `sudo apt install cmake extra-cmake-modules libcurl4-gnutls-dev libpcap0.8-dev libsdl2-dev qtbase5-dev qtbase5-private-dev qtmultimedia5-dev libslirp-dev libarchive-dev libzstd-dev`
+   - Older Ubuntu: `sudo apt install cmake extra-cmake-modules libcurl4-gnutls-dev libpcap0.8-dev libsdl2-dev qt5-default qtbase5-private-dev qtmultimedia5-dev libslirp-dev libarchive-dev libzstd-dev`
+   - Arch Linux: `sudo pacman -S base-devel cmake extra-cmake-modules git libpcap sdl2 qt5-base qt5-multimedia libslirp libarchive zstd`
+2. Download the melonDS repository and prepare:
+
    ```bash
    git clone https://github.com/melonDS-emu/melonDS
    cd melonDS
@@ -51,6 +54,7 @@ As for the rest, the interface should be pretty straightforward. If you have a q
    ```
 
 ### Windows
+
 1. Install [MSYS2](https://www.msys2.org/)
 2. Open the **MSYS2 MinGW 64-bit** terminal
 3. Update the packages using `pacman -Syu` and reopen the terminal if it asks you to
@@ -63,7 +67,9 @@ As for the rest, the interface should be pretty straightforward. If you have a q
    git clone https://github.com/melonDS-emu/melonDS
    cd melonDS
    ```
+
 #### Dynamic builds (with DLLs)
+
 5. Install dependencies: `pacman -S mingw-w64-x86_64-{cmake,SDL2,toolchain,qt5-base,qt5-svg,qt5-multimedia,qt5-tools,libslirp,libarchive,zstd}`
 6. Compile:
    ```bash
@@ -72,18 +78,20 @@ As for the rest, the interface should be pretty straightforward. If you have a q
    cd build
    ../tools/msys-dist.sh
    ```
-If everything went well, melonDS and the libraries it needs should now be in the `dist` folder.
+   If everything went well, melonDS and the libraries it needs should now be in the `dist` folder.
 
 #### Static builds (without DLLs, standalone executable)
+
 5. Install dependencies: `pacman -S mingw-w64-x86_64-{cmake,SDL2,toolchain,qt5-static,libslirp,libarchive,zstd}`
 6. Compile:
    ```bash
    cmake -B build -DBUILD_STATIC=ON -DCMAKE_PREFIX_PATH=/mingw64/qt5-static
    cmake --build build
    ```
-If everything went well, melonDS should now be in the `build` folder.
+   If everything went well, melonDS should now be in the `build` folder.
 
 ### macOS
+
 1. Install the [Homebrew Package Manager](https://brew.sh)
 2. Install dependencies: `brew install git pkg-config cmake sdl2 qt@6 libslirp libarchive zstd`
 3. Download the melonDS repository and prepare:
@@ -96,34 +104,48 @@ If everything went well, melonDS should now be in the `build` folder.
    cmake -B build -DCMAKE_PREFIX_PATH="$(brew --prefix qt@6);$(brew --prefix libarchive)" -DUSE_QT6=ON
    cmake --build build -j$(sysctl -n hw.logicalcpu)
    ```
-If everything went well, melonDS.app should now be in the `build` directory.
+   If everything went well, melonDS.app should now be in the `build` directory.
+
+### Nintendo switch homebrew - macOS
+
+1. Install the [Homebrew Package Manager](https://brew.sh)
+2. Install dependencies: `brew install git pkg-config cmake sdl2 qt@6 libslirp libarchive zstd`
+3. Install [devkitA64](https://devkitpro.org/wiki/Getting_Started#macOS) and restart your system
+4. run `sudo dkp-pacman -S switch-dev`
+5. Download the melonDS repository and run build the .nro:
+   ```zsh
+   >git clone https://github.com/melonDS-emu/melonDS
+   >cd melonDS/src/frontend/switch
+   >make -j$(sysctl -n hw.logicalcpu)
+   ```
 
 #### Self-contained app bundle
+
 If you want an app bundle that can be distributed to other computers without needing to install dependencies through Homebrew, you can additionally run `
 ../tools/mac-bundle.rb melonDS.app` after the build is completed, or add `-DMACOS_BUNDLE_LIBS=ON` to the first CMake command.
 
 ## TODO LIST
 
- * better DSi emulation
- * better OpenGL rendering
- * netplay
- * the impossible quest of pixel-perfect 3D graphics
- * support for rendering screens to separate windows
- * emulating some fancy addons
- * other non-core shit (debugger, graphics viewers, etc)
+- better DSi emulation
+- better OpenGL rendering
+- netplay
+- the impossible quest of pixel-perfect 3D graphics
+- support for rendering screens to separate windows
+- emulating some fancy addons
+- other non-core shit (debugger, graphics viewers, etc)
 
 ### TODO LIST FOR LATER (low priority)
 
- * big-endian compatibility (Wii, etc)
- * LCD refresh time (used by some games for blending effects)
- * any feature you can eventually ask for that isn't outright stupid
+- big-endian compatibility (Wii, etc)
+- LCD refresh time (used by some games for blending effects)
+- any feature you can eventually ask for that isn't outright stupid
 
 ## Credits
 
- * Martin for GBAtek, a good piece of documentation
- * Cydrak for the extra 3D GPU research
- * limittox for the icon
- * All of you comrades who have been testing melonDS, reporting issues, suggesting shit, etc
+- Martin for GBAtek, a good piece of documentation
+- Cydrak for the extra 3D GPU research
+- limittox for the icon
+- All of you comrades who have been testing melonDS, reporting issues, suggesting shit, etc
 
 ## Licenses
 
@@ -135,4 +157,5 @@ the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 ### External
-* Images used in the Input Config Dialog - see `src/frontend/qt_sdl/InputConfig/resources/LICENSE.md`
+
+- Images used in the Input Config Dialog - see `src/frontend/qt_sdl/InputConfig/resources/LICENSE.md`
